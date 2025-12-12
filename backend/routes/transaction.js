@@ -14,8 +14,9 @@ const transactionSchema = z.object({
   category: z.string(),
 });
 
-// get all transaction
+// get all transaction of the specified user
 transRouter.get("/me", async (req, res) => {
+
   const transactions = await Transaction.find({ user: req.user.userId }); // specific user find
   res.json({
     msg: "Your transaction:",
