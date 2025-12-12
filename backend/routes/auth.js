@@ -5,7 +5,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 const authRoute = express.Router();
 import jwt from "jsonwebtoken";
-import { json, z } from "zod";
+import { z } from "zod";
 
 const signupSchema = z.object({
   firstName: z.string(),
