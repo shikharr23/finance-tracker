@@ -1,5 +1,7 @@
-import React from "react";
 import { useState } from "react";
+import client from "../api/client.js";
+import { useNavigate, Link } from "react-router-dom";
+
 import Input from "../components/Input";
 import Button from "../components/Button";
 
@@ -8,12 +10,30 @@ const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const { data } = await client.post("/api/auth/signup", {
+        firstName,
+        userName,
+        password,
+      });
+      if (!data?.token) {
+        console.error("No token returned from signup");
+        return;
+      }
+      localStorage.setItem("token", data.token);
+      navigate("/dashboard");
+      console.log("Signup succeessful!!", data);
+    } catch (error) {
+      console.error("Signup failed", error.message);
+    }
   };
   return (
     <div className="bg-neutral-300 min-h-screen flex items-center">
-      <div className="mx-auto  bg-white p-8 w-130 rounded shadow">
+      <div className="mx-auto  bg-white p-8 w-130 rounded-xl shadow">
         <div className="flex flex-col">
           <span className="text-5xl  mt-3 mb-2 font-semibold ">
             {" "}
@@ -42,6 +62,7 @@ const Signup = () => {
             <Input
               label={"Password"}
               value={password}
+              type="password"
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter password"
               spellCheck={false}
@@ -49,6 +70,17 @@ const Signup = () => {
           </div>
           <div className="flex justify-center mt-6">
             <Button text="SignUp" />
+          </div>
+          <div className="mt-4">
+            <span className="text-pink-600 text-xl font-semibold">
+              Already have an account?
+            </span>
+            <Link
+              to="/signup"
+              className=" ml-2 hover:underline text-xl font-semibold"
+            >
+              Signin
+            </Link>
           </div>
         </form>
       </div>
