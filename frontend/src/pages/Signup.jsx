@@ -1,6 +1,7 @@
 import { useState } from "react";
 import client from "../api/client.js";
 import { useNavigate, Link } from "react-router-dom";
+import { useTransactions } from "../context/TransactionContext";
 
 import Input from "../components/Input";
 import Button from "../components/Button";
@@ -11,6 +12,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const { fetchTransactions } = useTransactions();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +27,12 @@ const Signup = () => {
         return;
       }
       localStorage.setItem("token", data.token);
+      // fetch transactions now that token is available
+      try {
+        await fetchTransactions();
+      } catch (err) {
+        console.warn("fetch after signup failed", err);
+      }
       navigate("/dashboard");
       console.log("Signup succeessful!!", data);
     } catch (error) {

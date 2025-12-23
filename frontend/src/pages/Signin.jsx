@@ -4,6 +4,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
 import client from "../api/client.js";
+import { useTransactions } from "../context/TransactionContext";
 
 const Signin = () => {
   const [userName, setUserName] = useState("");
@@ -11,6 +12,7 @@ const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
+  const { fetchTransactions } = useTransactions();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +24,11 @@ const Signin = () => {
 
       if (data && data.token) {
         localStorage.setItem("token", data.token);
+        try {
+          await fetchTransactions();
+        } catch (err) {
+          console.warn('fetch after signin failed', err);
+        }
         navigate("/dashboard");
         console.log("Signin succeessful!!", data);
       } else {
