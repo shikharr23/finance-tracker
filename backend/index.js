@@ -6,7 +6,13 @@ import cors from "cors";
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://finance-tracker-mu-eight.vercel.app/",
+    "https://localhost:5173"
+
+  ]
+}));
 app.use(express.json());
 //routes
 import authRoute from "./routes/auth.js";
