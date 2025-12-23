@@ -10,7 +10,7 @@ const Input = ({ label, type = "text", placeholder, onChange, value, spellCheck 
         placeholder={placeholder}
         onChange={onChange}
         spellCheck={spellCheck}
-        className="border rounded px-3 py-2 w-full font-semibold"
+        className="border rounded px-3 mt-1 mb-2 py-2 w-full font-semibold"
       />
     </div>
   );

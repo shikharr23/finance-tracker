@@ -76,7 +76,7 @@ const Signup = () => {
               Already have an account?
             </span>
             <Link
-              to="/signup"
+              to="/signin"
               className=" ml-2 hover:underline text-xl font-semibold"
             >
               Signin
