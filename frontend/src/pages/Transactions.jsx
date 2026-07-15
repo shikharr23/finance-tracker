@@ -51,21 +51,56 @@ const Transactions = () => {
 
       {!loading && transactions.length === 0 && <div>No transactions yet.</div>}
 
-      <ul className="space-y-2">
-        {transactions.map((t) => (
-          <li key={t._id} className="border p-3 rounded-md  bg-white flex justify-between items-center">
-            <div>
-              <div className="font-medium">{t.category} — {t.type}</div>
-              <div className="text-sm text-gray-600">{new Date(t.date).toLocaleDateString()}</div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="text-lg">₹{t.amount}</div>
-              <button className="px-2 py-1 bg-neutral-400 rounded cursor-pointer" onClick={() => startEdit(t)}>Edit</button>
-              <button className="px-2 py-1 bg-red-500 text-white rounded cursor-pointer" onClick={() => deleteTransaction(t._id)}>Delete</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <ul className="space-y-4">
+  {transactions.map((t) => (
+    <li
+      key={t._id}
+      className="bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition p-5 flex justify-between items-center"
+    >
+      <div>
+        <h3 className="text-lg font-semibold text-slate-900">
+          {t.category}
+        </h3>
+
+        <div className="flex items-center gap-3 mt-2">
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-medium ${
+              t.type === "income"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {t.type}
+          </span>
+
+          <span className="text-slate-500 text-sm">
+            {new Date(t.date).toLocaleDateString()}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-4">
+        <div className="text-2xl font-bold text-slate-900">
+          ₹{t.amount}
+        </div>
+
+        <button
+          onClick={() => startEdit(t)}
+          className="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-800 text-white transition"
+        >
+          Edit
+        </button>
+
+        <button
+          onClick={() => deleteTransaction(t._id)}
+          className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white transition"
+        >
+          Delete
+        </button>
+      </div>
+    </li>
+  ))}
+</ul>
 
       {editID && (
         <div className="mt-6 border p-4 rounded bg-white">

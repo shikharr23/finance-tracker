@@ -27,7 +27,7 @@ const Signin = () => {
         try {
           await fetchTransactions();
         } catch (err) {
-          console.warn('fetch after signin failed', err);
+          console.warn("fetch after signin failed", err);
         }
         navigate("/dashboard");
         console.log("Signin succeessful!!", data);
@@ -41,14 +41,16 @@ const Signin = () => {
 
   return (
     <div className="bg-neutral-300 min-h-screen flex items-center">
-      <div className="mx-auto bg-white p-8 w-130 rounded-xl shadow">
+      <div className="mx-auto  bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
         <div className="flex flex-col">
-          <span className="text-4xl mt-3 mb-2 font-semibold ">
-            Sign In to Your Account
+          <span className=" text-3xl text-slate-900 mx-auto font-bold">
+            Welcome back!
           </span>
-          <span className="text-2xl mt-2 mb-3">
-            Welcome back! Please enter your credentials to access your finance
-            tracker.
+          {/* <span className="text-2xl mt-2 mb-1 font-semibold ">
+            Sign In to Your Account
+          </span> */}
+          <span className="w-90 mx-auto block text-center text-slate-700 font-semibold text-lg mt-1 mb-4">
+              Sign in to continue managing your finances.
           </span>
         </div>
         <form noValidate onSubmit={handleSubmit}>
@@ -69,7 +71,7 @@ const Signin = () => {
               spellCheck={false}
             />
             <button
-              className="text-left text-xl border border-black w-20 flex justify-center rounded-md cursor-pointer "
+              className="text-left text-md border border-black w-15 flex justify-center rounded-md cursor-pointer hover:bg-slate-400 hover:text-white font-semibold px-2 py-1"
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
             >
@@ -80,7 +82,7 @@ const Signin = () => {
             <Button text="Signin" />
           </div>
           <div className="mt-4">
-            <span className="text-pink-600 text-xl font-semibold">
+            <span className="text-slate-500 text-xl font-semibold ">
               New User?
             </span>
             <Link

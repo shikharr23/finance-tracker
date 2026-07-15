@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import client from "../api/client.js";
 import { useTransactions } from "../context/TransactionContext";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Card from "../components/Card";
-
 
 const AddTransaction = () => {
   const [amount, setAmount] = useState("");
@@ -15,26 +13,34 @@ const AddTransaction = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState("");
-  
+
   const navigate = useNavigate();
   const { addTransaction } = useTransactions();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setErrors({});
     setSuccess("");
 
     const v = {};
-    if (!amount || Number(amount) <= 0) v.amount = "Enter a positive amount";
-    if (!category || !category.trim()) v.category = "Category is required";
-    if (!date) v.date = "Date is required";
 
-    // check if there are any errors, if any then return
+    if (!amount || Number(amount) <= 0)
+      v.amount = "Enter a positive amount";
+
+    if (!category.trim())
+      v.category = "Category is required";
+
+    if (!date)
+      v.date = "Date is required";
+
     if (Object.keys(v).length) {
       setErrors(v);
       return;
     }
 
     setLoading(true);
+
     try {
       const payload = {
         amount: Number(amount),
@@ -43,97 +49,114 @@ const AddTransaction = () => {
         date: new Date(date).toISOString(),
       };
 
-      console.log("Submitting payload:", payload);
-      const created = await addTransaction(payload);
-      console.log("Transaction created", created);
+      await addTransaction(payload);
 
-      setSuccess("Transaction added successfully");
+      setSuccess("Transaction added successfully!");
 
-      // Clear form first, then navigate after a short delay
       setAmount("");
       setCategory("");
       setDate(new Date().toISOString().slice(0, 10));
 
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
-
+      setTimeout(() => navigate("/dashboard"), 1000);
     } catch (error) {
-      console.error("Full error object:", error);
-      console.error("Error response:", error?.response);
-      console.error("Error data:", error?.response?.data);
-      setErrors({ submit: error?.response?.data?.msg || error?.response?.data || error.message });
+      setErrors({
+        submit:
+          error?.response?.data?.msg ||
+          error?.response?.data ||
+          error.message,
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className=" min-h-screen">
-      <div className="max-w-xl flex flex-col mx-auto pt-30">
-        <div className="flex justify-center mb-3">
-          <div className="font-semibold text-3xl text-pink-300 underline mb-3 ">
-            Add a Transaction
+    <div className="min-h-screen bg-slate-100 flex justify-center items-center px-4 py-8">
+      <Card className="w-full max-w-3xl bg-white border border-slate-200 rounded-2xl shadow-md p-8">
+        <h1 className="text-3xl font-bold text-slate-900 text-center">
+          Add Transaction
+        </h1>
+
+        <p className="text-slate-500 text-center mt-2 mb-8">
+          Record a new income or expense.
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <Input
+            label="Amount"
+            value={amount}
+            placeholder="Enter amount"
+            onChange={(e) => setAmount(e.target.value)}
+            spellCheck={false}
+          />
+
+          {errors.amount && (
+            <p className="text-red-500 text-sm">
+              {errors.amount}
+            </p>
+          )}
+
+          <Input
+            label="Category"
+            value={category}
+            placeholder="e.g. Food, Salary, Rent"
+            onChange={(e) => setCategory(e.target.value)}
+            spellCheck={false}
+          />
+
+          {errors.category && (
+            <p className="text-red-500 text-sm">
+              {errors.category}
+            </p>
+          )}
+
+          <div>
+            <label className="block mb-2 text-sm font-medium text-slate-700">
+              Transaction Type
+            </label>
+
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400"
+            >
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
           </div>
-        </div>
-        <div className=" ">
-          <Card>
-            <form onSubmit={handleSubmit}>
-              <Input
-                label="Amount"
-                value={amount}
-                placeholder="Enter amount"
-                onChange={(e) => setAmount(e.target.value)}
-                spellCheck={false}
-              />
 
-      
-              <Input
-                label="Category"
-                value={category}
-                placeholder="Category"
-                onChange={(e) => setCategory(e.target.value)}
-                spellCheck={false}
-              />
-              {errors.category && (
-                <div className="text-red-600 text-sm mt-1">
-                  {errors.category}
-                </div>
-              )}
-              <select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                className="border  w-full mt-4 mb-2 p-2 rounded-sm text-xl"
-              >
-                <option value="income">Income </option>
+          <Input
+            label="Date"
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
 
-                <option value="expense">Expense </option>
-              </select>
-              <Input
-                label="Date"
-                value={date}
-                type="date"
-                onChange={(e) => setDate(e.target.value)}
-              />
-              {errors.date && (
-                <div className="text-red-600 text-sm mt-1">{errors.date}</div>
-              )}
-              {errors.submit && (
-                <div className="text-red-600 text-sm mt-2">{errors.submit}</div>
-              )}
-              {success && (
-                <div className="text-green-600 text-sm mt-2">{success}</div>
-              )}
-              <div className="flex justify-center mt-6 ">
-                <Button
-                  text={loading ? "Saving..." : "Submit"}
-                  disabled={loading}
-                />
-              </div>
-            </form>
-          </Card>
-        </div>
-      </div>
+          {errors.date && (
+            <p className="text-red-500 text-sm">
+              {errors.date}
+            </p>
+          )}
+
+          {errors.submit && (
+            <p className="text-red-500 text-sm text-center">
+              {errors.submit}
+            </p>
+          )}
+
+          {success && (
+            <p className="text-green-600 text-sm text-center">
+              {success}
+            </p>
+          )}
+
+          <Button
+            text={loading ? "Saving..." : "Add Transaction"}
+            disabled={loading}
+            className="w-full bg-slate-800 hover:bg-slate-900 text-white rounded-xl py-3 transition-colors flex justify-center items-center"
+          />
+        </form>
+      </Card>
     </div>
   );
 };

@@ -41,14 +41,17 @@ const Signup = () => {
   };
   return (
     <div className="bg-neutral-300 min-h-screen flex items-center">
-      <div className="mx-auto  bg-white p-8 w-130 rounded-xl shadow">
+      <div className="mx-auto  bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
         <div className="flex flex-col">
-          <span className="text-5xl  mt-3 mb-2 font-semibold ">
+          {/* <span className="text-3xl  mt-3 mb-1 font-semibold flex justify-center items-center ">
             {" "}
             Get Started
+          </span> */}
+          <span className="text-3xl mt-2 text-slate-900 font-bold flex justify-center items-center ">
+            Welcome to finance-tracker  
           </span>
-          <span className="text-3xl mt-2 mb-3 ">
-            Welcome to finance-tracker <br /> Create your account
+          <span className="text-xl mb-4 mt-1 text-slate-700 font-semibold flex justify-center items-center ">
+            Create your account
           </span>
         </div>
         <form noValidate onSubmit={handleSubmit}>
@@ -79,13 +82,13 @@ const Signup = () => {
           <div className="flex justify-center mt-6">
             <Button text="SignUp" />
           </div>
-          <div className="mt-4">
-            <span className="text-pink-600 text-xl font-semibold">
+          <div className="mt-2">
+            <span className="text-slate-500 text-xl font-semibold">
               Already have an account?
             </span>
             <Link
               to="/signin"
-              className=" ml-2 hover:underline text-xl font-semibold"
+              className=" ml-2 hover:underline text-xl font-semibold hover:text-slate-700 text-slate-900"
             >
               Signin
             </Link>
