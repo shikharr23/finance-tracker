@@ -52,6 +52,7 @@ export function TransactionProvider({ children }) {
 
   const addTransaction = async (payload) => {
     const res = await client.post('/api/transaction', payload);
+    await fetchTransactions(); // Refresh the list after adding
     const createdRaw = res.data;
     const created = { ...createdRaw, amount: Number(createdRaw?.amount) || 0, date: createdRaw?.date ? new Date(createdRaw.date).toISOString() : null };
     dispatch({ type: 'add', payload: created });

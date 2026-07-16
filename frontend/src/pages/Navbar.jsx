@@ -8,11 +8,9 @@ const Navbar = () => {
 
   const isActive = (path) => location.pathname.startsWith(path);
 
-  const activeClasses =
-    "bg-white text-slate-900 shadow-sm";
+  const activeClasses = "bg-white text-slate-900 shadow-sm";
 
-  const inactiveClasses =
-    "text-slate-100 hover:text-slate-300";
+  const inactiveClasses = "text-slate-100 hover:text-slate-300 hover:bg-slate-500";
 
   return (
     <nav className="bg-slate-900 shadow-md">
@@ -25,9 +23,7 @@ const Navbar = () => {
             className="w-12 h-12 rounded-full object-cover"
           />
 
-          <h1 className="text-2xl font-bold text-white">
-            Finance Tracker
-          </h1>
+          <h1 className="text-2xl font-bold text-white">Finance Tracker</h1>
         </div>
 
         {/* Navigation Links */}
@@ -48,9 +44,7 @@ const Navbar = () => {
           <Link
             to="/dashboard/add"
             className={`px-4 py-2 rounded-lg transition-all duration-200 ${
-              isActive("/dashboard/add")
-                ? activeClasses
-                : inactiveClasses
+              isActive("/dashboard/add") ? activeClasses : inactiveClasses
             }`}
           >
             Add
@@ -65,6 +59,19 @@ const Navbar = () => {
             }`}
           >
             Transactions
+          </Link>
+
+          <Link 
+            className="px-3 py-1 rounded-lg transition-all duration-200 text-slate-100 hover:text-slate-300 hover:bg-slate-500"
+            to="/signin" onClick={(e) => {
+              const confirmLogout = window.confirm("Do you want to logout?");
+              if (!confirmLogout) {
+                e.preventDefault(); // Prevent navigation if user cancels
+              }
+              localStorage.removeItem("token"); 
+            }}
+          >
+            logout
           </Link>
         </div>
       </div>
