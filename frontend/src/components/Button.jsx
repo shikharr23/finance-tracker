@@ -1,10 +1,13 @@
 import React from 'react'
 
-const Button = ( {text} ) => {
+const Button = ({ text }) => {
   return (
-    <div>
-        <button type='submit' className='border border-black rounded-md text-lg px-5 py-1 text-center font-semibold cursor-pointer mx-auto hover:bg-slate-400 hover:text-white' > {text} </button>
-    </div>
+    <button
+      type="submit"
+      className="w-full bg-slate-500 hover:bg-slate-600 text-white font-semibold py-2.5 px-6 rounded-xl transition-all duration-200 shadow-sm text-sm cursor-pointer active:scale-[0.99]"
+    >
+      {text}
+    </button>
   )
 }
 

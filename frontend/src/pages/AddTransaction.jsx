@@ -8,6 +8,7 @@ import Card from "../components/Card";
 const AddTransaction = () => {
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("income");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [category, setCategory] = useState("");
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [loading, setLoading] = useState(false);
@@ -73,11 +74,11 @@ const AddTransaction = () => {
   return (
     <div className="min-h-screen bg-slate-100 flex justify-center items-center px-4 py-8">
       <Card className="w-full max-w-3xl bg-white border border-slate-200 rounded-2xl shadow-md p-8">
-        <h1 className="text-3xl font-bold text-slate-900 text-center">
+        <h1 className="text-2xl font-bold text-slate-900 text-center">
           Add Transaction
         </h1>
 
-        <p className="text-slate-500 text-center mt-2 mb-8">
+        <p className="text-slate-500  text-center mt-2 mb-6">
           Record a new income or expense.
         </p>
 
@@ -99,7 +100,7 @@ const AddTransaction = () => {
           <Input
             label="Category"
             value={category}
-            placeholder="e.g. Food, Salary, Rent"
+            placeholder="e.g. Food, Salary, Kiraya"
             onChange={(e) => setCategory(e.target.value)}
             spellCheck={false}
           />
@@ -115,14 +116,51 @@ const AddTransaction = () => {
               Transaction Type
             </label>
 
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400"
-            >
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </select>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-left text-sm font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400 flex justify-between items-center transition"
+              >
+                <span className="capitalize">{type}</span>
+                <span className="text-slate-400 text-xs font-semibold">
+                  {dropdownOpen ? "▲" : "▼"}
+                </span>
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute left-0 right-0 mt-1.5 z-50 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg">
+                  <div
+                    onClick={() => {
+                      setType("income");
+                      setDropdownOpen(false);
+                    }}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium cursor-pointer transition flex items-center justify-between ${
+                      type === "income"
+                        ? "bg-slate-100 text-slate-900 font-bold"
+                        : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                    }`}
+                  >
+                    <span>Income</span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  </div>
+                  <div
+                    onClick={() => {
+                      setType("expense");
+                      setDropdownOpen(false);
+                    }}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium cursor-pointer transition flex items-center justify-between ${
+                      type === "expense"
+                        ? "bg-slate-100 text-slate-900 font-bold"
+                        : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                    }`}
+                  >
+                    <span>Expense</span>
+                    <span className="w-2 h-2 rounded-full bg-rose-500" />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <Input

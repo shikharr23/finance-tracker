@@ -96,9 +96,7 @@ const Dashboard = () => {
           </div>
 
           {/* Charts */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-            <TransactionsCharts transactions={transactions} />
-          </div>
+          <TransactionsCharts transactions={transactions} />
         </>
       )}
     </div>
